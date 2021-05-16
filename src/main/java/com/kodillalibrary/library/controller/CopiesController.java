@@ -1,32 +1,47 @@
 package com.kodillalibrary.library.controller;
 
 import com.kodillalibrary.library.domain.copies.CopiesDto;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
+import com.kodillalibrary.library.service.CopiesDbService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/library")
+@AllArgsConstructor
+@RequestMapping(value = "/v1/copies")
 public class CopiesController {
+    private final CopiesDbService copiesDbService;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<CopiesDto> getCopies(){
-        return new ArrayList<>();
+        return copiesDbService.getCopies();
     }
 
-    public CopiesDto getCopy(Long id){
-        return new CopiesDto(1L, 1L, "borrowed");
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CopiesDto getCopy(@PathVariable Long id){
+        return copiesDbService.getCopy(id);
     }
 
-    public void deleteCopy(Long id){
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCopy(@PathVariable Long id){
+        copiesDbService.deleteCopy(id);
     }
 
-    public CopiesDto updateCopy(CopiesDto copiesDto){
-        return new CopiesDto(1L, 1L, "lost");
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public CopiesDto updateCopy(@PathVariable Long id, @RequestBody CopiesDto copiesDto){
+        return copiesDbService.updateCopy(id, copiesDto);
     }
 
-    public void createCopy(CopiesDto copiesDto){
-
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createCopy(@RequestBody CopiesDto copiesDto){
+        copiesDbService.createCopy(copiesDto);
     }
 }

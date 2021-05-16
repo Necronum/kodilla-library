@@ -1,34 +1,47 @@
 package com.kodillalibrary.library.controller;
 
 import com.kodillalibrary.library.domain.readers.ReadersDto;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
+import com.kodillalibrary.library.service.ReadersDbService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/library")
+@AllArgsConstructor
+@RequestMapping(value = "/v1/readers")
 public class ReadersController {
+    private final ReadersDbService readersDbService;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<ReadersDto> getReaders(){
-        return new ArrayList<>();
+        return readersDbService.getReaders();
     }
 
-    public ReadersDto getReader(Long id){
-        return new ReadersDto(1L, "Mack", "Milan", LocalDate.now());
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ReadersDto getReader(@PathVariable Long id){
+        return readersDbService.getReader(id);
     }
 
-    public void deleteReader(Long id){
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteReader(@PathVariable Long id){
+        readersDbService.deleteReader(id);
     }
 
-    public ReadersDto updateReader(ReadersDto readersDto){
-        LocalDate creationDate = readersDto.getCreationDate();
-        return new ReadersDto(1L, "Edited", "Edited", creationDate);
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ReadersDto updateReader(@PathVariable Long id, @RequestBody ReadersDto readersDto){
+        return readersDbService.updateReader(id, readersDto);
     }
 
-    public void createReader(ReadersDto readersDto){
-
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createReader(@RequestBody ReadersDto readersDto){
+        readersDbService.createReader(readersDto);
     }
 }

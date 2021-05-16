@@ -1,8 +1,13 @@
-package com.kodillalibrary.library.domain.borrow;
+package com.kodillalibrary.library.domain.rents;
+
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-public class Borrow {
+@Data
+@Builder
+public class RentsDto {
     private Long id;
     private Long copyId;
     private Long readerId;

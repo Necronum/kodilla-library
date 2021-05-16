@@ -1,11 +1,14 @@
 package com.kodillalibrary.library.domain.books;
 
+import com.kodillalibrary.library.domain.copies.Copies;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,4 +32,12 @@ public class Books {
 
     @NotNull
     private Year yearOfPublish;
+
+    @OneToMany(
+            targetEntity = Copies.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "book"
+    )
+    private List<Copies> copiesList = new ArrayList<>();
 }

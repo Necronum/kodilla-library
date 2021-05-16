@@ -1,11 +1,10 @@
 package com.kodillalibrary.library.domain.books;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.time.Year;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,4 +13,5 @@ public class BooksDto {
     private String title;
     private String author;
     private Year yearOfPublish;
+    private List<Long> copiesId;
 }

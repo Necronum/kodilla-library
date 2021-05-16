@@ -1,10 +1,10 @@
 package com.kodillalibrary.library.domain.copies;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+@Data
+@Builder
 public class CopiesDto {
     private Long id;
     private Long titleId;

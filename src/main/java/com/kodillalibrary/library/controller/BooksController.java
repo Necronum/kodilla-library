@@ -1,34 +1,47 @@
 package com.kodillalibrary.library.controller;
 
 import com.kodillalibrary.library.domain.books.BooksDto;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Year;
-import java.util.ArrayList;
+import com.kodillalibrary.library.service.BooksDbService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/library")
+@AllArgsConstructor
+@RequestMapping(value = "/v1/books")
 public class BooksController {
-    public List<BooksDto> getBook(){
-        return new ArrayList<>();
+    private final BooksDbService booksDbService;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<BooksDto> getBooks(){
+        return booksDbService.getBooks();
     }
 
-    public BooksDto getBook(Long id){
-        return new BooksDto(1L, "Mack", "Milan", Year.of(1999));
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BooksDto getBook(@PathVariable Long id){
+        return booksDbService.getBook(id);
     }
 
-    public void deleteBook(Long id){
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBook(@PathVariable Long id){
+        booksDbService.deleteBook(id);
     }
 
-    public BooksDto updateBook(BooksDto booksDto){
-        Year publishDate = booksDto.getYearOfPublish();
-        return new BooksDto(1L, "Edited", "Edited", publishDate);
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public BooksDto updateBook(@PathVariable Long id, @RequestBody BooksDto booksDto){
+        return booksDbService.updateBook(id, booksDto);
     }
 
-    public void createBook(BooksDto booksDto){
-
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createBook(@RequestBody BooksDto booksDto){
+        booksDbService.createBook(booksDto);
     }
 }
